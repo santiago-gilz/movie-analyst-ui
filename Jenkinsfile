@@ -8,9 +8,7 @@ pipeline {
     agent any
     stages {
         stage('Cloning our Git') {
-            steps {
-                git 'git@github.com:santiago-gilz/movie-analyst-ui.git'
-            }
+            checkout scm
         }
 
         stage('Building Docker Image') {
@@ -35,6 +33,17 @@ pipeline {
             steps{
                 sh "docker rmi --force $registry:$BUILD_NUMBER"
             }
+        }
+    }
+    post{
+        always{
+            deleteDir()
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
         }
     }
 }
