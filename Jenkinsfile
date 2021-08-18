@@ -2,13 +2,17 @@ pipeline {
     environment {
         registry = "sgilz/rampup-ui"
         registryCredential = 'dockerhub'
+        gitCredentials = "githubcredentials"
+        repoUrl = "https://github.com/santiago-gilz/movie-analyst-ui.git"
         dockerImage = ''
         BACK_HOST="internal-sgilz-api-elb-1069246019.us-west-1.elb.amazonaws.com"
     }
     agent any
     stages {
         stage('Cloning our Git') {
-            checkout scm
+            steps {
+                git branch: "master", credentialsId: 	gitCredentials, url: repoUrl
+            }
         }
 
         stage('Building Docker Image') {
