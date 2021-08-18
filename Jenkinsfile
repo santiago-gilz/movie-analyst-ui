@@ -18,7 +18,7 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("$registry:$BUILD_NUMBER", "--build-arg BACK_HOST=$BACK_HOST")
+                    dockerImage = docker.build("$registry:$BUILD_NUMBER", "--build-arg BACK_HOST=$BACK_HOST .")
                 }
             }
         }
