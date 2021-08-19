@@ -5,7 +5,6 @@ pipeline {
         gitCredentials = "githubcredentials"
         repoUrl = "https://github.com/santiago-gilz/movie-analyst-ui.git"
         dockerImage = ''
-        BACK_HOST="internal-sgilz-api-elb-1069246019.us-west-1.elb.amazonaws.com"
     }
     agent any
     stages {
@@ -25,7 +24,7 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("$registry:$BUILD_NUMBER", "--build-arg BACK_HOST=$BACK_HOST .")
+                    dockerImage = docker.build("$registry:$BUILD_NUMBER")
                 }
             }
         }
