@@ -1,7 +1,7 @@
 pipeline {
     environment {
         registry = "sgilz/rampup-ui"
-        registryCredential = 'dockerhub'
+        registryCredentials = 'dockercredentials'
         gitCredentials = "githubcredentials"
         repoUrl = "https://github.com/santiago-gilz/movie-analyst-ui.git"
         dockerImage = ''
@@ -26,7 +26,7 @@ pipeline {
         stage('Deploying Docker Image to Dockerhub') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
+                    docker.withRegistry('', registryCredentials) {
                     dockerImage.push()
                     }
                 }
