@@ -14,6 +14,13 @@ pipeline {
                 git branch: "master", credentialsId: 	gitCredentials, url: repoUrl
             }
         }
+        
+        stage('Running unit tests') {
+            steps {
+                sh 'npm install'
+                sh 'npm test'
+            }
+        }
 
         stage('Building Docker Image') {
             steps {
