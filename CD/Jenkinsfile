@@ -1,0 +1,47 @@
+pipeline {
+    environment {
+        API_LB_IP = credentials("api_lb_ip")
+    }
+    agent any
+    stages {
+        stage('Cloning system config repo') {
+            steps {
+                git branch: "master", 
+                    credentialsId: "githubcredentials", 
+                    url: "https://github.com/santiago-gilz/rampup-sysconfig.git"
+            }
+        }
+
+        stage('Running Ansible playbook') {
+            steps {
+                withCredentials([aws(credentialsId: 'awscredentials')]) {
+                    ansiColor('xterm') {
+                        ansiblePlaybook( 
+                            colorized: true,
+                            credentialsId: 'sshKeyPair',
+                            disableHostKeyChecking: true,
+                            dynamicInventory: true, 
+                            extraVars: [
+                                api_lb_ip: env.API_LB_IP
+                            ],
+                            inventory: 'environments/staging/aws_ec2.yml', 
+                            playbook: 'playbooks/ui.yml',
+                        ) 
+                    }
+                }
+            }
+        }
+    }
+    post{
+        always{
+            deleteDir()
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
+}
+
