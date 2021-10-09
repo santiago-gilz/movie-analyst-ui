@@ -11,13 +11,13 @@ ENV BACK_HOST=${BACK_HOST}
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package*.json ./
+#COPY package*.json ./
 
 #Install app dependencies
 RUN npm install 
 
 #Copy folder files to docker directory
-COPY . .
+#COPY . .
 
 #Run the app onto this port
 EXPOSE 3030
